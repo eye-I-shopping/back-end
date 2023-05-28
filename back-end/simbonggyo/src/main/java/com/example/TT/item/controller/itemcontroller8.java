@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class itemcontroller8 {
 
-	@PostMapping(value = "/data", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/data2", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> handleJSONData(@RequestBody List<itemDto4> itemList) {
         try {
             // Item 객체 내용 출력
