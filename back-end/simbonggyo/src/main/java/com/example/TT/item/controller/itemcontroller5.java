@@ -21,7 +21,7 @@
 //    @Autowired
 //    private ObjectMapper objectMapper;
 //
-//    @PostMapping("/data")
+//    @PostMapping("/data3")
 //    public ResponseEntity<String> handleJSONData(@RequestBody String json) {
 //        try {
 ////            jsonDto2[] jsonDtoArray = objectMapper.readValue(json, jsonDto2[].class);
