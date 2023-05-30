@@ -2,11 +2,11 @@ package com.example.TT.Setting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import com.example.TT.Setting.Service.SettingsService;
 import com.example.TT.Setting.dto.SettingsDTO;
 import com.example.TT.Setting.entity.Settings;
-import com.example.TT.item.controller.itemcontroller10;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -20,10 +20,22 @@ public class SettingsController {
     }
 
     @PostMapping("/settings")
-    public Settings updateOrCreate(@RequestBody SettingsDTO dto) {  	
-    	  log.info(dto.getFormat());   	
-        return service.updateOrCreate(dto);
+    public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) Integer id, @RequestBody SettingsDTO dto) {
+        if (id != null) {
+            dto.setId(id);
+        }
+        log.info(dto.getFormat());
+        Settings settings = service.updateOrCreate(dto);
+        return ResponseEntity.ok(settings);
     }
     
-    
+    @GetMapping("/settings/{id}")
+    public ResponseEntity<Settings> getSettings(@PathVariable int id) {
+        Settings settings = service.getSettingsById(id);
+        if (settings != null) {
+            return ResponseEntity.ok(settings);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
