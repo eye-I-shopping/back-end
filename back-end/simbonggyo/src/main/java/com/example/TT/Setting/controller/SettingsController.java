@@ -19,9 +19,11 @@ public class SettingsController {
         this.service = service;
     }
 
-    @PostMapping("/settings")
-    public Settings updateOrCreate(@RequestBody SettingsDTO dto) {  	
+    @PostMapping(value = "/settings")
+    public Settings updateOrCreate(@RequestBody SettingsDTO dto) {
+    	
     	  log.info(dto.getFormat());   	
+    	  
         return service.updateOrCreate(dto);
     }
     
