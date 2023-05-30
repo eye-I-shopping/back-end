@@ -29,7 +29,7 @@ public class itemcontroller10 {
         }
 
         // Iterate through all items and log their values
-        for (itemDto3 item : itemsList) {
+      for (itemDto3 item : itemsList) {
             log.info("Item Info:");
             log.info("xmin: {}", item.getXmin());
             log.info("ymin: {}", item.getYmin());
@@ -41,7 +41,7 @@ public class itemcontroller10 {
             return2.add(item.getName());
             log.info("---");
         }
-
+        
         return new ResponseEntity<>(return2, HttpStatus.OK);
     }
 }
