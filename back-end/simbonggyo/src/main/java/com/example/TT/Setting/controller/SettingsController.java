@@ -17,8 +17,6 @@ public class SettingsController {
     @Autowired
     public SettingsController(SettingsService service) {
         this.service = service;
-    }
-
-    
+    }   
     
 }
