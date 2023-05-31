@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"com.example.TT.item"})
+//@ComponentScan(basePackages = {"com.example.TT.item"})
 public class Test2Application {
 
 	public static void main(String[] args) {
