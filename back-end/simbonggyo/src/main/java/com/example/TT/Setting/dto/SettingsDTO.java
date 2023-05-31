@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class SettingsDTO {
     
-	private String token_id;
+	private String id;
     
 //    private int volume;
     

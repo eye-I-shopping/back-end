@@ -17,8 +17,8 @@ public class SettingsService {
     }
 
     public Settings updateOrCreate(SettingsDTO dto) {
-        Settings settings = repository.findById(dto.getToken_id()).orElse(new Settings());
-        settings.setId(dto.getToken_id());
+        Settings settings = repository.findById(dto.getId()).orElse(new Settings());
+        settings.setId(dto.getId());
 //        settings.setVolume(dto.getVolume());
         settings.setSpeed(dto.getSpeed());
         settings.setFormat(dto.getFormat());

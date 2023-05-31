@@ -22,7 +22,7 @@ public class SettingsController {
     @PostMapping("/settings")
     public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) String id, @RequestBody SettingsDTO dto) {
         if (id != null) {
-            dto.setToken_id(id);
+            dto.setId(id);
         }
         log.info(dto.getFormat());
         Settings settings = service.updateOrCreate(dto);
