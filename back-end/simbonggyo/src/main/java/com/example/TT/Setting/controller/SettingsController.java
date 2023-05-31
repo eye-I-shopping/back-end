@@ -19,13 +19,13 @@ public class SettingsController {
         this.service = service;
     }
 
-    @PostMapping(value = "/settings")
-    public Settings updateOrCreate(@RequestBody SettingsDTO dto) {
-    	
-    	  log.info(dto.getFormat());   	
-    	  
-        return service.updateOrCreate(dto);
-    }
+//    @PostMapping(value = "/settings")
+//    public Settings updateOrCreate(@RequestBody SettingsDTO dto) {
+//    	
+//    	  log.info(dto.getFormat());   	
+//    	  
+//        return service.updateOrCreate(dto);
+//    }
     
     
 }
