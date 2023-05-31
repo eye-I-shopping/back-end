@@ -28,7 +28,7 @@ public class test1 {
 	private Long id;   //상품 코드
 	
 	@Column(nullable = false,length = 50)
-	private String itemNm;  
+	private String name;  
 //상품 이름 맛 닥터페퍼 제로 닥터페퍼	
 	@Lob
 	@Column(nullable = false)
