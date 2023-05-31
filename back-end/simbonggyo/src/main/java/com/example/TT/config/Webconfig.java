@@ -11,7 +11,7 @@ public class Webconfig implements WebMvcConfigurer{
 	public void addCorsMappings(CorsRegistry registry)
 	{
 		registry.addMapping("/**")
-				.allowedOrigins("http://192.168.0.19:3000")
+				.allowedOrigins("http://192.168.0.28:3000")
 				.allowedMethods("*");
 	}
 	
