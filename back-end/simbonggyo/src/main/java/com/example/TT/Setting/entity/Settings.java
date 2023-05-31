@@ -12,9 +12,9 @@ import lombok.Setter;
 @Setter
 public class Settings {
     
-    @Id
-    @Column(name = "token_id", length = 255 , nullable = true)
-    private String id;   //토큰 아이디
+   
+    @Column(name = "token_id", length = 255, nullable = true)
+    private String id;   //토큰 아이디 
 	
     @Column(nullable = true)
     private int speed;

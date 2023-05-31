@@ -24,7 +24,7 @@ public class SettingsService {
         settings.setFormat(dto.getFormat());
         return repository.save(settings);
     }
-    public Settings getSettingsById(int id) {
+    public Settings getSettingsById(String id) {
         return repository.findById(id).orElse(null);
     }
 }

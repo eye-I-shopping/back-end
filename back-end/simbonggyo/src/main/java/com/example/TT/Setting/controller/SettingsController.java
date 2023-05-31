@@ -17,17 +17,12 @@ public class SettingsController {
     @Autowired
     public SettingsController(SettingsService service) {
         this.service = service;
-<<<<<<< HEAD
-    }   
-    
-}
-=======
     }
 
     @PostMapping("/settings")
-    public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) Integer id, @RequestBody SettingsDTO dto) {
+    public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) String id, @RequestBody SettingsDTO dto) {
         if (id != null) {
-            dto.setId(id);
+            dto.setToken_id(id);
         }
         log.info(dto.getFormat());
         Settings settings = service.updateOrCreate(dto);
@@ -35,7 +30,7 @@ public class SettingsController {
     }
     
     @GetMapping("/settings/{id}")
-    public ResponseEntity<Settings> getSettings(@PathVariable int id) {
+    public ResponseEntity<Settings> getSettings(@PathVariable String id) {
         Settings settings = service.getSettingsById(id);
         if (settings != null) {
             return ResponseEntity.ok(settings);
@@ -44,4 +39,3 @@ public class SettingsController {
         }
     }
 }
->>>>>>> dbbdca8ac3e478b1c6e46767f78ac8c4a0afc3dc
