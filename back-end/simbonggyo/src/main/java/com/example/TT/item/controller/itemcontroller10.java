@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.*;
 
 @RestController
@@ -35,13 +36,15 @@ public class itemcontroller10 {
             }
             String mostCommonCategory = Collections.max(categoryCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
             return new ResponseEntity<>(mostCommonCategory, HttpStatus.OK);
-        } else {
+        } 
+        else {
             List<itemDto3> top3Items = getTop3ItemsByConfidence(itemsList);
             double xMax = top3Items.get(0).getXmax();
             double yMax = top3Items.get(0).getYmax();
             List<String> itemLocations = new ArrayList<>();
 
             String itemDetail = itemService.getItemDetailByName(top3Items.get(0).getName());
+  
             if (itemDetail == null) {
                 itemDetail = top3Items.get(0).getName();
             }
