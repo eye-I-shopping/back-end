@@ -66,7 +66,6 @@ public class itemcontroller11 {
 
         // Lookup the test1 item in the database
         Optional<test1> dbItemOpt = test1Service.findByName(maxConfidenceItem.getName());
-        System.out.println(dbItemOpt.get());
         if (dbItemOpt.isEmpty()) {
             // If the item's detail is not in the database, return the item's name
             return new ResponseEntity<>(maxConfidenceItem.getName(), HttpStatus.OK);
@@ -80,8 +79,6 @@ public class itemcontroller11 {
     }
 
     public String ToGPT3(test1 test1) {
-    	System.out.println("---------------------------------------------");
-    	System.out.println(test1);
         // Gson 객체 생성 시 setPrettyPrinting()을 호출하여 pretty 형태로 출력하도록 설정
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -96,9 +93,13 @@ public class itemcontroller11 {
                 test1.getMake()
         );
 
+        Gson gson2 = new Gson();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("input", input);
+        String jsonInput = gson2.toJson(jsonObject);
         try {
             // 입력을 GPT-3에 전송하고 응답을 받습니다.
-            String responseJson = gpt3Service.processRequest(input);
+            String responseJson = gpt3Service.processRequest(jsonInput);
 
             // 간단하게 pretty 출력으로 변환하기 위해 JsonObject로 파싱 후 반환
             JsonObject responseObj = gson.fromJson(responseJson, JsonObject.class);
@@ -110,62 +111,4 @@ public class itemcontroller11 {
         }
     }
 
-    
-    class GPT3Prompt {
-        String prompt;
-        int max_tokens;
-        Double temperature;
-        Double top_p;
-        Integer n;
-        Boolean stream;
-
-        public GPT3Prompt(String prompt) {
-            this.prompt = "당신은 시각장애인에게 상품 상세정보를 알려주는 선생님입니다. "
-            		+ "\n당신은 {식품코드번호,\"식품이름\",\"식품의 맛\",\"식품 카테고리\",\"알레르기 정보\",\"식품포장분류\",\"조리방법, 주의할 점\"} 의 형식으로 정보를 제공 받습니다."
-            		+ "\n당신은 위 형식대로 주어진 단어 및 문장을 조합하여 한글 문법과 문맥을 잘지켜서 간결한 문장을 잘 만듭니다. "
-            		+ "당신은 새로운 정보를 덧 붙이지 않습니다. 제공받은 단어와문장을 조합하기 위한 조사와 서술어를 알맞게 기술하는 게 할 일입니다."
-            		+ " 당신의 이름은 아이쇼핑입니다. 주어진 단어와 문장은 마음대로 삭제 시키거나 줄이지 않습니다. ";
-            this.max_tokens = 100; //최대 토큰 수 지정
-            this.temperature = 0.0; //온도 =낮을수록 일관된 출력
-            this.top_p = 1.0; //큰 확률을 갖는 결과 리턴
-            this.n = 1; //출력 수 
-     this.stream = false; // 불완전한 결과 허용 안함
-        }
-
-        public String getPrompt() {
-            return prompt;
-        }
-
-        public int getMax_tokens() {
-            return max_tokens;
-        }
-
-        // 추가된 옵션에 대한 getter 메서드를 정의합니다.
-        public Double getTemperature() {
-            return temperature;
-        }
-
-        public Double getTop_p() {
-            return top_p;
-        }
-
-        public Integer getN() {
-            return n;
-        }
-
-        public Boolean getStream() {
-            return stream;
-        }
-    }
-
 }
-
-
-//	  "model": "text-davinci-003",
-//	  "prompt": "당신은 시각장애인에게 상품 상세정보를 알려주는 선생님입니다. \n당신은 {식품코드번호,\"식품이름\",\"식품의 맛\",\"식품 카테고리\",\"알레르기 정보\",\"식품포장분류\",\"조리방법, 주의할 점\"} 의 형식으로 정보를 제공 받습니다.\n당신은 위 형식대로 주어진 단어 및 문장을 조합하여 한글 문법과 문맥을 잘지켜서 간결한 문장을 잘 만듭니다. 당신은 새로운 정보를 덧 붙이지 않습니다. 제공받은 단어와문장을 조합하기 위한 조사와 서술어를 알맞게 기술하는 게 할 일입니다. 당신의 이름은 아이쇼핑입니다. 주어진 단어와 문장은 마음대로 삭제 시키거나 줄이지 않습니다. ",
-//	  "temperature": 0,
-//	  "max_tokens": 119,
-//	  "top_p": 1,
-//	  "frequency_penalty": 0,
-//	  "presence_penalty": 0
-//	
