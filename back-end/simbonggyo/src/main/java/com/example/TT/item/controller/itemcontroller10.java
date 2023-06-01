@@ -1,69 +1,110 @@
 package com.example.TT.item.controller;
 
 import com.example.TT.item.dto.itemDto3;
-import com.example.TT.item.entity.test1;
+import com.example.TT.item.entity.itementity;
 import com.example.TT.item.service.Test1Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+import java.util.*;
+
 @RestController
+@RequestMapping("/api/items")
+@Slf4j
 public class itemcontroller10 {
 
-    private final Test1Service test1Service;
+    private final Test1Service itemService;
 
-    public itemcontroller10(Test1Service test1Service) {
-        this.test1Service = test1Service;
+    public itemcontroller10(Test1Service itemService) {
+        this.itemService = itemService;
     }
 
-    @PostMapping(value = "/api/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/process-items")
     public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {
-        // Check if itemsList is not null or empty
         if (itemsList == null || itemsList.length == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Initialize maxConfidence and maxConfidenceItem
-        double maxConfidence = 0.0;
-        itemDto3 maxConfidenceItem = null;
+        if(itemsList.length >= 10) {
+            Map<String, Integer> categoryCountMap = new HashMap<>();
+            for (itemDto3 item : itemsList) {
+                String category = itemService.getCategoryByName(item.getName());
+                categoryCountMap.put(category, categoryCountMap.getOrDefault(category, 0) + 1);
+            }
+            String mostCommonCategory = Collections.max(categoryCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+            return new ResponseEntity<>(mostCommonCategory, HttpStatus.OK);
+        } else {
+            List<itemDto3> top3Items = getTop3ItemsByConfidence(itemsList);
+            double xMax = top3Items.get(0).getXmax();
+            double yMax = top3Items.get(0).getYmax();
+            List<String> itemLocations = new ArrayList<>();
 
-        // Iterate through all items and log their values
+            String itemDetail = itemService.getItemDetailByName(top3Items.get(0).getName());
+            if (itemDetail == null) {
+                itemDetail = top3Items.get(0).getName();
+            }
+
+            double xSum = 0.0, ySum = 0.0;
+            for (itemDto3 item : top3Items) {
+                xSum += item.getXmax();
+                ySum += item.getYmax();
+            }
+            double xAvg = xSum / top3Items.size();
+            double yAvg = ySum / top3Items.size();
+
+            for (itemDto3 item : top3Items) {
+                double x = item.getXmax();
+                double y = item.getYmax();
+
+                String itemName = item.getName();
+
+                if (x > xAvg && y < yAvg) {
+                    itemLocations.add("오른쪽 아래쪽 (" + itemName + ")");
+                } else if (x > xAvg && y > yAvg) {
+                    itemLocations.add("오른쪽 위쪽 (" + itemName + ")");
+                } else if (x < xAvg && y < yAvg) {
+                    itemLocations.add("왼쪽 아래쪽 (" + itemName + ")");
+                } else if (x < xAvg && y > yAvg) {
+                    itemLocations.add("왼쪽 위쪽 (" + itemName + ")");
+                }
+            }
+            Map<String, Object> result = new HashMap<>();
+            result.put("itemDetail", itemDetail);
+            result.put("itemLocations", itemLocations);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+    }
+
+
+    private List<itemDto3> getTop3ItemsByConfidence(itemDto3[] itemsList) {
+        List<itemDto3> top3Items = new ArrayList<>();
+
+        for (int i = 0; i < 3 && i < itemsList.length; i++) {
+            itemDto3 maxConfidenceItem = itemsList[0];
+
+            for (int j = 1; j < itemsList.length; j++) {
+                if (itemsList[j].getConfidence() > maxConfidenceItem.getConfidence()) {
+                    maxConfidenceItem = itemsList[j];
+                }
+            }
+
+            top3Items.add(maxConfidenceItem);
+            itemsList = removeItem(itemsList, maxConfidenceItem);
+        }
+
+        return top3Items;
+    }
+
+    private itemDto3[] removeItem(itemDto3[] itemsList, itemDto3 itemToRemove) {
+        List<itemDto3> itemList = new ArrayList<>();
         for (itemDto3 item : itemsList) {
-            log.info("Item Info:");
-            log.info("xmin: {}", item.getXmin());
-            log.info("ymin: {}", item.getYmin());
-            log.info("xmax: {}", item.getXmax());
-            log.info("ymax: {}", item.getYmax());
-            log.info("confidence: {}", item.getConfidence());
-            log.info("class: {}", item.getClazz());
-            log.info("name: {}", item.getName());
-            log.info("---");
-
-            // Check if this item's confidence is greater than maxConfidence
-            if(item.getConfidence() > maxConfidence){
-                maxConfidence = item.getConfidence();
-                maxConfidenceItem = item;
+            if (!item.equals(itemToRemove)) {
+                itemList.add(item);
             }
         }
-
-        // If no item found with confidence more than 0, return bad request
-        if(maxConfidenceItem == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        // Lookup the test1 item in the database
-        Optional<test1> dbItemOpt = test1Service.findByName(maxConfidenceItem.getName());
-        if(dbItemOpt.isEmpty()){
-            // If the item's detail is not in the database, return the item's name
-            return new ResponseEntity<>(maxConfidenceItem.getName(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(dbItemOpt.get(), HttpStatus.OK);
+        return itemList.toArray(new itemDto3[0]);
     }
 }

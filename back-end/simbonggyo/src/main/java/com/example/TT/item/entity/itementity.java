@@ -1,6 +1,5 @@
 package com.example.TT.item.entity;
 import java.time.LocalDateTime;
-
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class test1 {
+public class itementity {
 	
 //이름 -> 검색 이퀄값 ...........
 //딥러닝 -> json 
@@ -36,7 +35,7 @@ public class test1 {
 //상품 상세 설명 (1.맛-(조금 매운맛,많이 매운맛- 객관적인걸로)
     
 //2.상품 카테고리 
-	private String categori;
+	private String category;
 	
 //3.알레르기 정보(대두,복숭아 함유가 되있으므로 주의해야된다) 설정?
     private String Allegori;
