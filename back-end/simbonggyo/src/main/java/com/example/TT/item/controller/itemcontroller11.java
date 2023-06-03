@@ -88,14 +88,13 @@ public class itemcontroller11 {
                 test1.getShape(),
                 test1.getMake()
         ));
-        prompt.setMax_tokens(100);
+        prompt.setMax_tokens(500);
         prompt.setTemperature(0.0);
         prompt.setTop_p(1.0);
         prompt.setN(1);
         prompt.setStream(false);
         prompt.setLogprobs(null);
-        prompt.setStop("\n");
-
+        prompt.setStop("<|endoftext|>");
         String jsonInput="";
         jsonInput = gson.toJson(prompt);
         System.out.println("jsonInput: " + jsonInput);
@@ -111,9 +110,6 @@ public class itemcontroller11 {
                 JsonArray choicesArray = responseObj.getAsJsonArray("choices");
                 if (!choicesArray.isJsonNull() && choicesArray.size() > 0) {
                     JsonObject choiceObject = choicesArray.get(0).getAsJsonObject();
-                    if (choiceObject.has("finish_reason") && choiceObject.get("finish_reason").getAsString().equals("stop")) {
-                        return "No text generated";
-                    }
                     if (choiceObject.has("message") && choiceObject.get("message").isJsonObject()) {
                         JsonObject messageObject = choiceObject.getAsJsonObject("message");
                         if (messageObject.has("content")) {
@@ -125,7 +121,7 @@ public class itemcontroller11 {
             }
 
 
-            return "Error ";
+            return responseJson;
 
         } catch (IOException e) {
             String noinput = String.format("The name of this product is " +
