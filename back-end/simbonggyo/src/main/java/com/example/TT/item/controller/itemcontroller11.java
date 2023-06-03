@@ -88,8 +88,8 @@ public class itemcontroller11 {
         // GPT3Prompt 객체 생성
         GPT3Prompt prompt = new GPT3Prompt();
         prompt.setModel("text-davinci-003");
-        prompt.setPrompt(String.format("Please generate a sentence using the following details: " +
-                "item_nm: %s, categori: %s, item_detail: %s, allegori: %s, shape: %s, make: %s",
+        prompt.setPrompt(String.format("다음의 정보를 활용하여 문장을 만들어주세요." +
+                "이름: %s, 카테고리: %s, %s, 알레르기: %s, %s, %s ",
                 test1.getName(),
                 test1.getCategori(),
                 test1.getItemDetail(),
@@ -108,12 +108,13 @@ public class itemcontroller11 {
         // GPT3Prompt 객체를 JSON 문자열로 변환
         
         String jsonInput="";
-		try {
-			jsonInput = new String(gson.toJson(prompt).getBytes("UTF-8"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+      try {
+         jsonInput = new String(gson.toJson(prompt).getBytes("UTF-8"), "UTF-8");
+     
+      } catch (UnsupportedEncodingException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
         System.out.println("jsonInput: " + jsonInput);
 
         try {
@@ -146,7 +147,7 @@ public class itemcontroller11 {
         } catch (IOException e) {
             // API 요청이 실패할 때 예외 처리를 합니다.
             String noinput = String.format("이 제품의 이름" +
-            		  "item_nm: %s, categori: %s, item_detail: %s, allegori: %s, shape: %s, make: %s",
+                    "item_nm: %s, categori: %s, item_detail: %s, allegori: %s, shape: %s, make: %s",
                     test1.getName(),
                     test1.getCategori(),
                     test1.getItemDetail(),
