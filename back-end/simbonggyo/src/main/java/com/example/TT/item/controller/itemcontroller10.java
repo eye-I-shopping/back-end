@@ -66,33 +66,31 @@ public class itemcontroller10 {
             if (itemDetail == "") {
                 itemDetail = top3Items.get(0).getName();
             }
-//            {"itemLocations":["오른쪽 아래쪽 (아사히 캔3)","오른쪽 위쪽 (라게보드 아일랜드 라거캔1)","왼 쪽 아래쪽 (라게보드 아일랜드 라거캔2)"],"itemDetail":"아사히 캔3"}
-            double xSum = 0.0, ySum = 0.0;
-            for (itemDto3 item : top3Items) {
-                xSum += item.getXmax();
-                ySum += item.getYmax();
+            itemDto3 highestConfidenceItem = top3Items.get(0);
+            
+            double xReference = highestConfidenceItem.getXmax();
+            double yReference = highestConfidenceItem.getYmax();
+            if (!top3Items.isEmpty()) {
+                top3Items.remove(0);
             }
-            double xAvg = xSum / top3Items.size();
-            double yAvg = ySum / top3Items.size();
+            //            {"itemLocations":["오른쪽 아래쪽 (아사히 캔3)","오른쪽 위쪽 (라게보드 아일랜드 라거캔1)","왼 쪽 아래쪽 (라게보드 아일랜드 라거캔2)"],"itemDetail":"아사히 캔3"}
 
             for (itemDto3 item : top3Items) {
-            	
-            	
                 double x = item.getXmax();
                 double y = item.getYmax();
-
                 String itemName = item.getName();
 
-                if (x > xAvg && y < yAvg) {
+                if (x > xReference && y < yReference) {
                     itemLocations.add("오른쪽 아래쪽 (" + itemName + ")");
-                } else if (x > xAvg && y > yAvg) {
+                } else if (x > xReference && y > yReference) {
                     itemLocations.add("오른쪽 위쪽 (" + itemName + ")");
-                } else if (x < xAvg && y < yAvg) {
+                } else if (x < xReference && y < yReference) {
                     itemLocations.add("왼쪽 아래쪽 (" + itemName + ")");
-                } else if (x < xAvg && y > yAvg) {
+                } else if (x < xReference && y > yReference) {
                     itemLocations.add("왼쪽 위쪽 (" + itemName + ")");
                 }
             }
+
             Map<Object, Object> result = new HashMap<>();
             result.put("itemDetail", itemDetail);
             result.put("itemLocations", itemLocations);
@@ -104,34 +102,37 @@ public class itemcontroller10 {
 
     private List<itemDto3> getTop3ItemsByConfidence(itemDto3[] itemsList) {
         List<itemDto3> top3Items = new ArrayList<>();
+        Set<itemDto3> selectedItems = new HashSet<>();
 
         for (int i = 0; i < 3 && i < itemsList.length; i++) {
-//        	3개 또는 아이템 리스트 만큼 시작
-            itemDto3 maxConfidenceItem = itemsList[0];
+            itemDto3 maxConfidenceItem = null;
 
-            for (int j = 1; j < itemsList.length; j++) {
-                if (itemsList[j].getConfidence() > maxConfidenceItem.getConfidence()) {
-                    maxConfidenceItem = itemsList[j];
+            for (itemDto3 item : itemsList) {
+                if (!selectedItems.contains(item) && (maxConfidenceItem == null || item.getConfidence() > maxConfidenceItem.getConfidence())) {
+                    maxConfidenceItem = item;
                 }
             }
-//정확도 순으로 3개 담기
-            top3Items.add(maxConfidenceItem);
-            itemsList = removeItem(itemsList, maxConfidenceItem);
+
+            if (maxConfidenceItem != null) {
+                top3Items.add(maxConfidenceItem);
+                selectedItems.add(maxConfidenceItem);
+            }
         }
         System.out.println(top3Items);
-
         return top3Items;
     }
 
+
+
     
     
-    private itemDto3[] removeItem(itemDto3[] itemsList, itemDto3 itemToRemove) {
-        List<itemDto3> itemList = new ArrayList<>();
-        for (itemDto3 item : itemsList) {
-            if (!item.equals(itemToRemove)) {
-                itemList.add(item);
-            }
-        }       
-        return itemList.toArray(new itemDto3[0]);
-    }
+//    private itemDto3[] removeItem(itemDto3[] itemsList, itemDto3 itemToRemove) {
+//        List<itemDto3> itemList = new ArrayList<>();
+//        for (itemDto3 item : itemsList) {
+//            if (!item.equals(itemToRemove)) {
+//                itemList.add(item);
+//            }
+//        }       
+//        return itemList.toArray(new itemDto3[0]);
+//    }
 }
