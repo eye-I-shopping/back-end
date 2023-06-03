@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Console;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @RestController
@@ -18,15 +20,17 @@ public class itemcontroller10 {
 
     private final Test1Service itemService;
 
+   
     public itemcontroller10(Test1Service itemService) {
         this.itemService = itemService;
     }
-
     @PostMapping("/process-items")
-    public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {
-        if (itemsList == null || itemsList.length == 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {   	
+    	if (itemsList == null || itemsList.length == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        
         }
+    	
+    	System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         if(itemsList.length >= 10) {
             Map<String, Integer> categoryCountMap = new HashMap<>();
@@ -36,15 +40,24 @@ public class itemcontroller10 {
             }
             String mostCommonCategory = Collections.max(categoryCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
             return new ResponseEntity<>(mostCommonCategory, HttpStatus.OK);
-        } 
+  
+        
+        }     
         else {
+        	
+        	
+//        	최대 상세정보?
+        	
+        	
+// 매대인식 끝 10 미만일때 시작      	
             List<itemDto3> top3Items = getTop3ItemsByConfidence(itemsList);
-            double xMax = top3Items.get(0).getXmax();
-            double yMax = top3Items.get(0).getYmax();
+            
+//            System.out.println(top3Items);
             List<String> itemLocations = new ArrayList<>();
 
             String itemDetail = itemService.getItemDetailByName(top3Items.get(0).getName());
   
+            
             if (itemDetail == null) {
                 itemDetail = top3Items.get(0).getName();
             }
@@ -58,6 +71,8 @@ public class itemcontroller10 {
             double yAvg = ySum / top3Items.size();
 
             for (itemDto3 item : top3Items) {
+            	
+            	
                 double x = item.getXmax();
                 double y = item.getYmax();
 
@@ -73,7 +88,7 @@ public class itemcontroller10 {
                     itemLocations.add("왼쪽 위쪽 (" + itemName + ")");
                 }
             }
-            Map<String, Object> result = new HashMap<>();
+            Map<Object, Object> result = new HashMap<>();
             result.put("itemDetail", itemDetail);
             result.put("itemLocations", itemLocations);
 
@@ -86,6 +101,7 @@ public class itemcontroller10 {
         List<itemDto3> top3Items = new ArrayList<>();
 
         for (int i = 0; i < 3 && i < itemsList.length; i++) {
+//        	3개 또는 아이템 리스트 만큼 시작
             itemDto3 maxConfidenceItem = itemsList[0];
 
             for (int j = 1; j < itemsList.length; j++) {
@@ -93,14 +109,17 @@ public class itemcontroller10 {
                     maxConfidenceItem = itemsList[j];
                 }
             }
-
+//정확도 순으로 3개 담기
             top3Items.add(maxConfidenceItem);
+            System.out.println(top3Items);
             itemsList = removeItem(itemsList, maxConfidenceItem);
         }
 
         return top3Items;
     }
 
+    
+    
     private itemDto3[] removeItem(itemDto3[] itemsList, itemDto3 itemToRemove) {
         List<itemDto3> itemList = new ArrayList<>();
         for (itemDto3 item : itemsList) {
@@ -108,6 +127,8 @@ public class itemcontroller10 {
                 itemList.add(item);
             }
         }
+       
+       
         return itemList.toArray(new itemDto3[0]);
     }
 }

@@ -2,9 +2,9 @@ package com.example.TT.item.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import groovy.transform.ToString;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -33,5 +33,4 @@ public class itemDto3 {
         this.name = name;
     }
 
-    // 게터 및 세터 메소드
 }

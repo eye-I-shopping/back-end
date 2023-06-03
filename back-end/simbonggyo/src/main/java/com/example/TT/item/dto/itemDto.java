@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 
 import com.example.TT.item.constant.itemSellStatus;
 
+import groovy.transform.ToString;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@lombok.ToString
 public class itemDto {
 	
 	private Long id;   //상품 코드

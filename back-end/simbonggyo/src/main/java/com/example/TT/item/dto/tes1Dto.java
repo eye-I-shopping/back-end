@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@ToString
+@lombok.ToString
 @NoArgsConstructor
 public class tes1Dto {
 
