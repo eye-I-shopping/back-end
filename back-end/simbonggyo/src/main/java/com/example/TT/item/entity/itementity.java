@@ -26,11 +26,11 @@ public class itementity {
 	@Column(name = "Item_id")
 	private Long id;   //상품 코드
 	
-	@Column(nullable = false,length = 50)
+	@Column(name = "Item_nm", nullable = false,length = 50)
 	private String name;  
 //상품 이름 맛 닥터페퍼 제로 닥터페퍼	
 	@Lob
-	@Column(nullable = false)
+	@Column(name = "Item_detail", nullable = false)
 	private String itemDetail; 
 //상품 상세 설명 (1.맛-(조금 매운맛,많이 매운맛- 객관적인걸로)
     
