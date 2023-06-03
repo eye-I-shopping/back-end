@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,7 +40,9 @@ public class itemcontroller11 {
         if (itemsList == null || itemsList.length == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
+        
+        System.setOut(new PrintStream(System.out,true,StandardCharsets.UTF_8));
+        
         // Initialize maxConfidence and maxConfidenceItem
         double maxConfidence = 0.0;
         itemDto3 maxConfidenceItem = null;
