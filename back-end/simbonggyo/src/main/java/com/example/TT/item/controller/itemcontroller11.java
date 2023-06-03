@@ -34,6 +34,7 @@ public class itemcontroller11 {
         this.gpt3Service = gpt3Service;
     }
 
+    
     @PostMapping(value = "/api/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {
         if (itemsList == null || itemsList.length == 0) {
@@ -60,6 +61,8 @@ public class itemcontroller11 {
                 maxConfidenceItem = item;
             }
         }
+        
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         if (maxConfidenceItem == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -79,8 +82,8 @@ public class itemcontroller11 {
 
         GPT3Prompt prompt = new GPT3Prompt();
         prompt.setModel("text-davinci-003");
-        prompt.setPrompt(String.format("Please generate a sentence using the following information." +
-                "Name: %s, Category: %s, %s, Allergens: %s, %s, %s ",
+        prompt.setPrompt(String.format("다음 정보를 이용하여 존댓말로 문장을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요." +
+                "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, 병 재질:%s, %s ",
                 test1.getName(),
                 test1.getCategori(),
                 test1.getItemDetail(),
@@ -99,32 +102,12 @@ public class itemcontroller11 {
         jsonInput = gson.toJson(prompt);
         System.out.println("jsonInput: " + jsonInput);
 
+        
         try {
-            String responseJson = gpt3Service.processRequest(jsonInput);
-            System.out.println("responseJson: " + responseJson);
-
-            JsonObject responseObj = new Gson().fromJson(responseJson, JsonObject.class);
-            System.out.println("responseObj: " + responseObj);
-            
-            if (responseObj.has("choices") && responseObj.get("choices").isJsonArray()) {
-                JsonArray choicesArray = responseObj.getAsJsonArray("choices");
-                if (!choicesArray.isJsonNull() && choicesArray.size() > 0) {
-                    JsonObject choiceObject = choicesArray.get(0).getAsJsonObject();
-                    if (choiceObject.has("message") && choiceObject.get("message").isJsonObject()) {
-                        JsonObject messageObject = choiceObject.getAsJsonObject("message");
-                        if (messageObject.has("content")) {
-                            String generatedText = messageObject.get("content").getAsString();
-                            return generatedText;
-                        }
-                    }
-                }
-            }
-
-
-            return responseJson;
-
+            String generatedText = gpt3Service.processRequest(jsonInput);
+            return generatedText;
         } catch (IOException e) {
-            String noinput = String.format("The name of this product is " +
+            String noinput = String.format("제품명" +
                     "item_nm: %s, category: %s, item_detail: %s, allergens: %s, shape: %s, make: %s",
                     test1.getName(),
                     test1.getCategori(),
@@ -133,10 +116,9 @@ public class itemcontroller11 {
                     test1.getShape(),
                     test1.getMake());
             return noinput;
-
-        } catch (JsonSyntaxException e) {
-            log.error("Error processing GPT-3 response", e);
-            return "Error processing GPT-3 response";
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return "Error processing GPT-3 response"; 
         }
     }
 
