@@ -44,24 +44,29 @@ public class itemcontroller10 {
         
         }     
         else {
-        	
-        	
-//        	최대 상세정보?
+        		
+//       최대 상세정보?
         	
         	
 // 매대인식 끝 10 미만일때 시작      	
             List<itemDto3> top3Items = getTop3ItemsByConfidence(itemsList);
+//            [itemDto3(name=라게보드 아일랜드 라거캔1), itemDto3( name=라게보드 아일랜드 라거캔2), itemDto3(name=아사히 캔3)]
+
+            
             
 //            System.out.println(top3Items);
             List<String> itemLocations = new ArrayList<>();
 
+            
+//           정확도 0번째 디테일가져오기
             String itemDetail = itemService.getItemDetailByName(top3Items.get(0).getName());
   
-            
-            if (itemDetail == null) {
+            System.out.println(itemDetail);
+//  환타다          
+            if (itemDetail == "") {
                 itemDetail = top3Items.get(0).getName();
             }
-
+//            {"itemLocations":["오른쪽 아래쪽 (아사히 캔3)","오른쪽 위쪽 (라게보드 아일랜드 라거캔1)","왼 쪽 아래쪽 (라게보드 아일랜드 라거캔2)"],"itemDetail":"아사히 캔3"}
             double xSum = 0.0, ySum = 0.0;
             for (itemDto3 item : top3Items) {
                 xSum += item.getXmax();
@@ -111,9 +116,9 @@ public class itemcontroller10 {
             }
 //정확도 순으로 3개 담기
             top3Items.add(maxConfidenceItem);
-            System.out.println(top3Items);
             itemsList = removeItem(itemsList, maxConfidenceItem);
         }
+        System.out.println(top3Items);
 
         return top3Items;
     }
@@ -126,9 +131,7 @@ public class itemcontroller10 {
             if (!item.equals(itemToRemove)) {
                 itemList.add(item);
             }
-        }
-       
-       
+        }       
         return itemList.toArray(new itemDto3[0]);
     }
 }
