@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GPT3Service {
-    private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
+    private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
     private final OkHttpClient client = new OkHttpClient();
 
     public String processRequest(String jsonInput) throws IOException {
-        String url = "https://api.openai.com/v1/models/text-davinci-003/completions";
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        String url = "https://api.openai.com/v1/completions";
+        MediaType mediaType = MediaType.parse("application/json; charset = UTF-8");
         RequestBody body = RequestBody.create(jsonInput, mediaType);
 
         Request request = new Request.Builder()
@@ -26,8 +26,11 @@ public class GPT3Service {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
+            	System.out.println("반응 성공");
                 return response.body().string();
             } else {
+            	System.out.println("반응 실패");
+            	System.out.println("메시지입니다."+ response.code());
                 return jsonInput;
             }
         }
