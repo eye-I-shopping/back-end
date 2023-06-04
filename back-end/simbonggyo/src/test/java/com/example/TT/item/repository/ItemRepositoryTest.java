@@ -115,11 +115,7 @@
 //    	JPAQueryFactory QueryFactory = new JPAQueryFactory(em);
 ////    	Qitem qitem = new Qitem("i"); 
 ////    	Qitem qitem = item;
-<<<<<<< HEAD
-//    	
-=======
-////    	
->>>>>>> 6c981c644dde203db6d602ce58e80fa2f2ff7fe5
+
 //    	List<item> list = QueryFactory
 ////    	.select(item)
 ////    	.from(item)
