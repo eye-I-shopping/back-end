@@ -20,4 +20,6 @@ public class Settings {
     private int speed;
     
     private String format;
+    
+    private int filter;
 }

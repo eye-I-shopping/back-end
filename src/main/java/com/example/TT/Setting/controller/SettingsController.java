@@ -1,5 +1,8 @@
 package com.example.TT.Setting.controller;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +24,20 @@ public class SettingsController {
 
     @PostMapping("/settings")
     public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) String id, @RequestBody SettingsDTO dto) {
+    	System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+
         if (id != null) {
             dto.setId(id);
         }
-        log.info(dto.getFormat());
+//        log.info(dto.getId());
+//        log.info(dto.getFormat());
+//        log.info(dto.getId());
+        	System.out.println(dto);
+//        log.info(dto.getFilter());
+
+//        log.info(dto.getClass());
+//        log.info(dto.getSpeed());
+
         Settings settings = service.updateOrCreate(dto);
         return ResponseEntity.ok(settings);
     }
