@@ -48,7 +48,11 @@ public class SettingsController {
         if (settings != null) {
             return ResponseEntity.ok(settings);
         } else {
-            return ResponseEntity.notFound().build();
+            return null;
         }
     }
 }
+
+
+
+

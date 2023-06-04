@@ -17,13 +17,15 @@ public class itemDto3 {
     private double confidence;
     private int clazz;
     private String name;
+	private int filter;
 
     @JsonCreator
     public itemDto3(@JsonProperty("xmin") double xmin, @JsonProperty("ymin") double ymin,
                     @JsonProperty("xmax") double xmax, @JsonProperty("ymax") double ymax,
                     @JsonProperty("confidence") double confidence,
                     @JsonProperty("class") int clazz,
-                    @JsonProperty("name") String name) {
+                    @JsonProperty("name") String name,
+                    @JsonProperty("filter") int filter) {
         this.xmin = xmin;
         this.ymin = ymin;
         this.xmax = xmax;
@@ -31,6 +33,7 @@ public class itemDto3 {
         this.confidence = confidence;
         this.clazz = clazz;
         this.name = name;
+        this.filter = filter;
     }
 
 }
