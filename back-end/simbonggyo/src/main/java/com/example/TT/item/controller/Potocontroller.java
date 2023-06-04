@@ -83,8 +83,43 @@ public class Potocontroller {
             }
    
         String generatedSentence = ToGPT3(dbItemOpt.get());
-        return new ResponseEntity<>(generatedSentence, HttpStatus.OK);
-   
+        
+        List<String> itemLocations = new ArrayList<>();
+        
+        double xReference = highestConfidenceItem.getXmax();
+        double yReference = highestConfidenceItem.getYmax();
+        
+        if (!top3Items.isEmpty()) {
+        	 top3Items.remove(0);
+        }
+        
+      for (itemDto3 item : top3Items) {
+      double x = item.getXmax();
+      double y = item.getYmax();
+      String itemName = item.getName();
+
+      if (x > xReference && y < yReference) {
+          itemLocations.add("오른쪽 아래쪽 " + itemName + "");
+      } else if (x > xReference && y > yReference) {
+          itemLocations.add("오른쪽 위쪽 " + itemName + "");
+      } else if (x < xReference && y < yReference) {
+          itemLocations.add("왼쪽 아래쪽 " + itemName + "");
+      } else if (x < xReference && y > yReference) {
+          itemLocations.add("왼쪽 위쪽 " + itemName + "");
+      }else if(x < xReference && y == yReference){
+          itemLocations.add("수평에서 왼쪽에있습니다. " + itemName + "");
+	}else if(x > xReference && y == yReference){
+        itemLocations.add("수평에서 오른쪽에있습니다. " + itemName + "");
+	}
+      else if(x == xReference && y < yReference){
+        itemLocations.add("바로 아래쪽에있습니다. " + itemName + "");
+	} else if(x == xReference && y > yReference){
+        itemLocations.add("바로 위쪽에있습니다. " + itemName + "");
+	} 
+  }
+        
+              
+        return new ResponseEntity<>(generatedSentence + itemLocations , HttpStatus.OK);
         }
     }
     
