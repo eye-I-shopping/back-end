@@ -45,7 +45,6 @@ public class thymeleafController {
 	@GetMapping(value = "/ex3")
 	public String ex3(Model model)
 	{
-		
 		List<itemDto> list = new ArrayList<itemDto>();
 		
 		for (int i = 1; i < 10; i++) {
