@@ -20,4 +20,5 @@ public class SettingsDTO {
     private String format;
     
     private int filter;
+    
 }
