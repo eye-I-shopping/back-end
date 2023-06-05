@@ -192,8 +192,8 @@ public class Potocontroller {
         GPT3PromptDto prompt = new GPT3PromptDto();
 		prompt.setModel("text-davinci-003");
 		prompt.setPrompt(String.format(
-				"다음 정보를 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
-						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, 모양:%s, %s",
+				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
+						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
 				test1.getName(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
 				test1.getMake()));
 		prompt.setMax_tokens(500);

@@ -22,6 +22,7 @@ public class SettingsService {
 //        settings.setVolume(dto.getVolume());
         settings.setSpeed(dto.getSpeed());
         settings.setSpeaker(dto.getSpeaker());
+        settings.setUserSettings(dto.getUserSettings());
         return repository.save(settings);
     }
     public Settings getSettingsById(String id) {

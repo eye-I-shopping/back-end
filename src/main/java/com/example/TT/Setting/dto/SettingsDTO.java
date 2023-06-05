@@ -19,6 +19,5 @@ public class SettingsDTO {
     
     private String speaker;
     
-    private int userSettings;
-    
+    private int userSettings;    
 }
