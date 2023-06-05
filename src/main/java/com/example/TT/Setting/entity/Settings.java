@@ -19,7 +19,7 @@ public class Settings {
     @Column(nullable = true)
     private int speed;
     
-    private String format;
+    private String speaker;
     
-    private int filter;
+    private int userSettings;
 }
