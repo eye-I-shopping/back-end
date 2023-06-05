@@ -27,7 +27,7 @@ public class itemDto3 {
                     @JsonProperty("confidence") double confidence,
                     @JsonProperty("class") int clazz,
                     @JsonProperty("name") String name,
-                    @JsonProperty("filter") String filter) {
+                    @JsonProperty("userSettings") String filter) {
         this.xmin = xmin;
         this.ymin = ymin;
         this.xmax = xmax;

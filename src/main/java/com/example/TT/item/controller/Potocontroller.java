@@ -47,7 +47,7 @@ public class Potocontroller {
 	System.out.println("1번쟤"+itemsList);	
 		
 		if (itemsList == null || itemsList.length == 0) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return null;
 		}
 
 		System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
@@ -149,11 +149,8 @@ public class Potocontroller {
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
 			}else if(highestConfidenceItem.getFilter().equals("0")) {
-				dbItemOpt.get().setMake(null);
-				dbItemOpt.get().setItemDetail(null);
-				dbItemOpt.get().setAllegori(null);
-				dbItemOpt.get().setShape(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				
+				generatedSentence = highestConfidenceItem.getName();
 	        }
 
 			List<String> itemLocations = new ArrayList<>();
@@ -193,19 +190,23 @@ public class Potocontroller {
 				
 			}
 			
-//				String p ="";
-//				String s = "";
-//				if(itemLocations!=null) {
-//				s = itemLocations.get(0).concat(itemLocations.get(1));
-//				}
-//				if(s!=null) {
-//				p = generatedSentence.concat(s);
-//				}else {
-//					p = generatedSentence;
-//				}
-//				
-//				System.out.println(p);
-			return new ResponseEntity<>(generatedSentence , HttpStatus.OK);
+				String p ="";
+				String s = "";
+				if(itemLocations.size() == 2) {
+				s = itemLocations.get(0).concat(itemLocations.get(1));
+				}
+				else if(itemLocations.size() == 1){
+				s =	itemLocations.get(0);
+				}
+				
+				if(s!=null) {
+				p = generatedSentence.concat(s);
+				}else {
+					p = generatedSentence;
+				}
+				
+				System.out.println(p);
+			return new ResponseEntity<>(p , HttpStatus.OK);
 		}
 	}
 
@@ -215,8 +216,10 @@ public class Potocontroller {
         GPT3PromptDto prompt = new GPT3PromptDto();
 		prompt.setModel("text-davinci-003");
 		prompt.setPrompt(String.format(
-				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
-						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
+//				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
+//						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
+						"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
+								+ "%s,%s, %s, %s, %s, %s",
 				test1.getName(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
 				test1.getMake()));
 		prompt.setMax_tokens(500);
