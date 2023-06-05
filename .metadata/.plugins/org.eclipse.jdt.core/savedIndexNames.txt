@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-INDEX VERSION 1.131+C:\Users\user\Desktop\javaproject\eyeIproject\backendproejct\.metadata\.plugins\org.eclipse.jdt.core
-1865797976.index
-521605994.index
-349017120.index
-=======
-INDEX VERSION 1.132+C:\Users\OWNER\Documents\back\.metadata\.plugins\org.eclipse.jdt.core
-1865797976.index
->>>>>>> 5441700faa8b902901462bf8f87a360f19623f9d
