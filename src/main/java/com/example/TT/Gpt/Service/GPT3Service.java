@@ -16,7 +16,7 @@ import okhttp3.Response;
 
 @Service
 public class GPT3Service {
-    private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
+    private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
 
     private final OkHttpClient client = new OkHttpClient();
 
