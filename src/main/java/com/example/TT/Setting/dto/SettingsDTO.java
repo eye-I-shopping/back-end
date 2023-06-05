@@ -17,8 +17,8 @@ public class SettingsDTO {
     
     private int speed;
     
-    private String format;
+    private String speaker;
     
-    private int filter;
+    private int userSettings;
     
 }

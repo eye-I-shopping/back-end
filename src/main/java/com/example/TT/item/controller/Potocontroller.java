@@ -1,20 +1,6 @@
 package com.example.TT.item.controller;
 
-import com.example.TT.Gpt.Service.GPT3Service;
-import com.example.TT.item.dto.itemDto3;
-import com.example.TT.item.entity.itementity;
-import com.example.TT.item.service.Test1Service;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,11 +11,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.TT.Gpt.Service.GPT3Service;
+import com.example.TT.item.dto.itemDto3;
+import com.example.TT.item.dto.GPT3PromptDto;
+
+import com.example.TT.item.entity.itementity;
+import com.example.TT.item.service.Test1Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -191,7 +189,7 @@ public class Potocontroller {
 	public String ToGPT3(itementity test1) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		GPT3Prompt prompt = new GPT3Prompt();
+        GPT3PromptDto prompt = new GPT3PromptDto();
 		prompt.setModel("text-davinci-003");
 		prompt.setPrompt(String.format(
 				"다음 정보를 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
@@ -219,89 +217,89 @@ public class Potocontroller {
 		} 
 	}
 
-	class GPT3Prompt {
-		String model;
-		String prompt;
-		int max_tokens;
-		double temperature;
-		double top_p;
-		int n;
-		boolean stream;
-		String logprobs;
-		String stop;
-
-		public String getModel() {
-			return model;
-		}
-
-		public void setModel(String model) {
-			this.model = model;
-		}
-
-		public String getPrompt() {
-			return prompt;
-		}
-
-		public void setPrompt(String prompt) {
-			this.prompt = prompt;
-		}
-
-		public int getMax_tokens() {
-			return max_tokens;
-		}
-
-		public void setMax_tokens(int max_tokens) {
-			this.max_tokens = max_tokens;
-		}
-
-		public double getTemperature() {
-			return temperature;
-		}
-
-		public void setTemperature(double temperature) {
-			this.temperature = temperature;
-		}
-
-		public double getTop_p() {
-			return top_p;
-		}
-
-		public void setTop_p(double top_p) {
-			this.top_p = top_p;
-		}
-
-		public int getN() {
-			return n;
-		}
-
-		public void setN(int n) {
-			this.n = n;
-		}
-
-		public boolean isStream() {
-			return stream;
-		}
-
-		public void setStream(boolean stream) {
-			this.stream = stream;
-		}
-
-		public String getLogprobs() {
-			return logprobs;
-		}
-
-		public void setLogprobs(String logprobs) {
-			this.logprobs = logprobs;
-		}
-
-		public String getStop() {
-			return stop;
-		}
-
-		public void setStop(String stop) {
-			this.stop = stop;
-		}
-	}
+//	class GPT3Prompt {
+//		String model;
+//		String prompt;
+//		int max_tokens;
+//		double temperature;
+//		double top_p;
+//		int n;
+//		boolean stream;
+//		String logprobs;
+//		String stop;
+//
+//		public String getModel() {
+//			return model;
+//		}
+//
+//		public void setModel(String model) {
+//			this.model = model;
+//		}
+//
+//		public String getPrompt() {
+//			return prompt;
+//		}
+//
+//		public void setPrompt(String prompt) {
+//			this.prompt = prompt;
+//		}
+//
+//		public int getMax_tokens() {
+//			return max_tokens;
+//		}
+//
+//		public void setMax_tokens(int max_tokens) {
+//			this.max_tokens = max_tokens;
+//		}
+//
+//		public double getTemperature() {
+//			return temperature;
+//		}
+//
+//		public void setTemperature(double temperature) {
+//			this.temperature = temperature;
+//		}
+//
+//		public double getTop_p() {
+//			return top_p;
+//		}
+//
+//		public void setTop_p(double top_p) {
+//			this.top_p = top_p;
+//		}
+//
+//		public int getN() {
+//			return n;
+//		}
+//
+//		public void setN(int n) {
+//			this.n = n;
+//		}
+//
+//		public boolean isStream() {
+//			return stream;
+//		}
+//
+//		public void setStream(boolean stream) {
+//			this.stream = stream;
+//		}
+//
+//		public String getLogprobs() {
+//			return logprobs;
+//		}
+//
+//		public void setLogprobs(String logprobs) {
+//			this.logprobs = logprobs;
+//		}
+//
+//		public String getStop() {
+//			return stop;
+//		}
+//
+//		public void setStop(String stop) {
+//			this.stop = stop;
+//		}
+//	}
 
 	private List<itemDto3> getTop3ItemsByConfidence(itemDto3[] itemsList) {
 		List<itemDto3> top3Items = new ArrayList<>();
