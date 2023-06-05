@@ -39,10 +39,13 @@ public class Potocontroller {
 		this.test1Service = test1Service;
 		this.gpt3Service = gpt3Service;
 	}
-
+		
 	@PostMapping(value = "/api/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {
 		System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+	
+	System.out.println("1번쟤"+itemsList);	
+		
 		if (itemsList == null || itemsList.length == 0) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -75,73 +78,77 @@ public class Potocontroller {
 			}
 
 			if (dbItemOpt.isEmpty()) {
+			
+				
 				return new ResponseEntity<>(highestConfidenceItem.getName(), HttpStatus.OK);
+			
 			}
+		
 			String generatedSentence = "";
-			if (highestConfidenceItem.getFilter() == 15) {
+			if (highestConfidenceItem.getFilter().equals("15") ) {
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 14) {
+			} else if (highestConfidenceItem.getFilter().equals("14")) {
 				dbItemOpt.get().setItemDetail(null);
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 13) {
+			} else if (highestConfidenceItem.getFilter().equals("13")) {
 				dbItemOpt.get().setAllegori(null);
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 12) {
-				dbItemOpt.get().setAllegori(null);
-				dbItemOpt.get().setItemDetail(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 11) {
-				dbItemOpt.get().setShape(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 10) {
-				dbItemOpt.get().setShape(null);
-				dbItemOpt.get().setItemDetail(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 9) {
-				dbItemOpt.get().setShape(null);
-				dbItemOpt.get().setAllegori(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 8) {
-				dbItemOpt.get().setShape(null);
+			} else if (highestConfidenceItem.getFilter().equals("12")) {
 				dbItemOpt.get().setAllegori(null);
 				dbItemOpt.get().setItemDetail(null);
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 7) {
+			} else if (highestConfidenceItem.getFilter().equals("11")) {
+				dbItemOpt.get().setShape(null);
+				generatedSentence = ToGPT3(dbItemOpt.get());
+			} else if (highestConfidenceItem.getFilter().equals("10")) {
+				dbItemOpt.get().setShape(null);
+				dbItemOpt.get().setItemDetail(null);
+				generatedSentence = ToGPT3(dbItemOpt.get());
+			} else if (highestConfidenceItem.getFilter().equals("9")) {
+				dbItemOpt.get().setShape(null);
+				dbItemOpt.get().setAllegori(null);
+				generatedSentence = ToGPT3(dbItemOpt.get());
+			} else if (highestConfidenceItem.getFilter().equals("8")) {
+				dbItemOpt.get().setShape(null);
+				dbItemOpt.get().setAllegori(null);
+				dbItemOpt.get().setItemDetail(null);
+				generatedSentence = ToGPT3(dbItemOpt.get());
+			} else if (highestConfidenceItem.getFilter().equals("7")) {
 				dbItemOpt.get().setMake(null);
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 6) {
+			} else if (highestConfidenceItem.getFilter().equals("6")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setItemDetail(null);
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 5) {
+			} else if (highestConfidenceItem.getFilter().equals("5")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setAllegori(null);
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 4) {
+			} else if (highestConfidenceItem.getFilter().equals("4")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setItemDetail(null);
 				dbItemOpt.get().setAllegori(null);
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 3) {
+			} else if (highestConfidenceItem.getFilter().equals("3")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setShape(null);
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 2) {
+			} else if (highestConfidenceItem.getFilter().equals("2")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setItemDetail(null);
 				dbItemOpt.get().setShape(null);
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			} else if (highestConfidenceItem.getFilter() == 1) {
+			} else if (highestConfidenceItem.getFilter().equals("1")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setShape(null);
 				dbItemOpt.get().setAllegori(null);
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
-			}else if(highestConfidenceItem.getFilter() == 0) {
+			}else if(highestConfidenceItem.getFilter().equals("0")) {
 				dbItemOpt.get().setMake(null);
 				dbItemOpt.get().setItemDetail(null);
 				dbItemOpt.get().setAllegori(null);
@@ -164,25 +171,41 @@ public class Potocontroller {
 				String itemName = item.getName();
 
 				if (x > xReference && y < yReference) {
-					itemLocations.add("오른쪽 아래쪽 " + itemName + "");
+					itemLocations.add("오른쪽 영역 하단 에  " + itemName + "이 있습니다.");
 				} else if (x > xReference && y > yReference) {
-					itemLocations.add("오른쪽 위쪽 " + itemName + "");
+					itemLocations.add("오른쪽 영역 상단 에 " + itemName + "이 있습니다.");
 				} else if (x < xReference && y < yReference) {
-					itemLocations.add("왼쪽 아래쪽 " + itemName + "");
+					itemLocations.add("왼쪽 영역 하단 에 " + itemName + "이 있습니다.");
 				} else if (x < xReference && y > yReference) {
-					itemLocations.add("왼쪽 위쪽 " + itemName + "");
+					itemLocations.add("왼쪽 영역 상단 에 " + itemName + "");
 				} else if (x < xReference && y == yReference) {
-					itemLocations.add("수평에서 왼쪽에있습니다. " + itemName + "");
+					itemLocations.add(itemName+"이 수평에서 왼쪽 영역에 있습니다. " );
 				} else if (x > xReference && y == yReference) {
-					itemLocations.add("수평에서 오른쪽에있습니다. " + itemName + "");
+					itemLocations.add(itemName+ "이 수평에서 오른쪽 영역에 있습니다. ");
 				} else if (x == xReference && y < yReference) {
-					itemLocations.add("바로 아래쪽에있습니다. " + itemName + "");
+					itemLocations.add(itemName +"바로 아래쪽에있습니다. ");
 				} else if (x == xReference && y > yReference) {
-					itemLocations.add("바로 위쪽에있습니다. " + itemName + "");
+					itemLocations.add( itemName + "은 바로 위쪽에있습니다. ");
 				}
+				else if (x == xReference && y == yReference) {
+					itemLocations.add(itemName + "은 같은위치에있습니다. ");
+				}
+				
 			}
-
-			return new ResponseEntity<>(generatedSentence + itemLocations, HttpStatus.OK);
+			
+//				String p ="";
+//				String s = "";
+//				if(itemLocations!=null) {
+//				s = itemLocations.get(0).concat(itemLocations.get(1));
+//				}
+//				if(s!=null) {
+//				p = generatedSentence.concat(s);
+//				}else {
+//					p = generatedSentence;
+//				}
+//				
+//				System.out.println(p);
+			return new ResponseEntity<>(generatedSentence , HttpStatus.OK);
 		}
 	}
 
@@ -217,89 +240,7 @@ public class Potocontroller {
 		} 
 	}
 
-//	class GPT3Prompt {
-//		String model;
-//		String prompt;
-//		int max_tokens;
-//		double temperature;
-//		double top_p;
-//		int n;
-//		boolean stream;
-//		String logprobs;
-//		String stop;
-//
-//		public String getModel() {
-//			return model;
-//		}
-//
-//		public void setModel(String model) {
-//			this.model = model;
-//		}
-//
-//		public String getPrompt() {
-//			return prompt;
-//		}
-//
-//		public void setPrompt(String prompt) {
-//			this.prompt = prompt;
-//		}
-//
-//		public int getMax_tokens() {
-//			return max_tokens;
-//		}
-//
-//		public void setMax_tokens(int max_tokens) {
-//			this.max_tokens = max_tokens;
-//		}
-//
-//		public double getTemperature() {
-//			return temperature;
-//		}
-//
-//		public void setTemperature(double temperature) {
-//			this.temperature = temperature;
-//		}
-//
-//		public double getTop_p() {
-//			return top_p;
-//		}
-//
-//		public void setTop_p(double top_p) {
-//			this.top_p = top_p;
-//		}
-//
-//		public int getN() {
-//			return n;
-//		}
-//
-//		public void setN(int n) {
-//			this.n = n;
-//		}
-//
-//		public boolean isStream() {
-//			return stream;
-//		}
-//
-//		public void setStream(boolean stream) {
-//			this.stream = stream;
-//		}
-//
-//		public String getLogprobs() {
-//			return logprobs;
-//		}
-//
-//		public void setLogprobs(String logprobs) {
-//			this.logprobs = logprobs;
-//		}
-//
-//		public String getStop() {
-//			return stop;
-//		}
-//
-//		public void setStop(String stop) {
-//			this.stop = stop;
-//		}
-//	}
+
 
 	private List<itemDto3> getTop3ItemsByConfidence(itemDto3[] itemsList) {
 		List<itemDto3> top3Items = new ArrayList<>();

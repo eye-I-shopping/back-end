@@ -3,12 +3,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class itemDto3 {
     private double xmin;
     private double ymin;
@@ -17,7 +19,7 @@ public class itemDto3 {
     private double confidence;
     private int clazz;
     private String name;
-	private int filter;
+	private String filter;
 
     @JsonCreator
     public itemDto3(@JsonProperty("xmin") double xmin, @JsonProperty("ymin") double ymin,
@@ -25,7 +27,7 @@ public class itemDto3 {
                     @JsonProperty("confidence") double confidence,
                     @JsonProperty("class") int clazz,
                     @JsonProperty("name") String name,
-                    @JsonProperty("filter") int filter) {
+                    @JsonProperty("filter") String filter) {
         this.xmin = xmin;
         this.ymin = ymin;
         this.xmax = xmax;

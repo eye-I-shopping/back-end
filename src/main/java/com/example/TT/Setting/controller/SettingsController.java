@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.TT.Setting.Service.SettingsService;
@@ -42,15 +43,18 @@ public class SettingsController {
         return ResponseEntity.ok(settings);
     }
     
-    @GetMapping("/settings/{id}")
-    public ResponseEntity<Settings> getSettings(@PathVariable String id) {
-        Settings settings = service.getSettingsById(id);
-        if (settings != null) {
+    @PostMapping("/settings/get")
+    public ResponseEntity<Settings> getSettings(@RequestBody SettingsDTO dto) {
+        if (dto != null) {
+        	Settings settings = service.getSettingsById(dto.getId());
             return ResponseEntity.ok(settings);
         } else {
-            return null;
+        	System.out.println(dto);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+
 }
 
 
