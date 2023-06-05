@@ -26,6 +26,7 @@ public class SettingsController {
     public ResponseEntity<Settings> updateOrCreate(@RequestParam(required = false) String id, @RequestBody SettingsDTO dto) {
     	System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
+    	
         if (id != null) {
             dto.setId(id);
         }
