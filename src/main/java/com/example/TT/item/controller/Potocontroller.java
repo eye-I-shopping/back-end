@@ -48,7 +48,7 @@ public class Potocontroller {
 	System.out.println("1번쟤"+itemsList);	
 		
 		if (itemsList == null || itemsList.length == 0) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return null;
 		}
 
 		System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
@@ -150,11 +150,8 @@ public class Potocontroller {
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
 			}else if(highestConfidenceItem.getFilter().equals("0")) {
-				dbItemOpt.get().setMake(null);
-				dbItemOpt.get().setItemDetail(null);
-				dbItemOpt.get().setAllegori(null);
-				dbItemOpt.get().setShape(null);
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				
+				generatedSentence = highestConfidenceItem.getName();
 	        }
 
 			List<String> itemLocations = new ArrayList<>();
@@ -207,6 +204,23 @@ public class Potocontroller {
 //				
 //				System.out.println(p);
 			return new ResponseEntity<>(generatedSentence , HttpStatus.OK);
+				String p ="";
+				String s = "";
+				if(itemLocations.size() == 2) {
+				s = itemLocations.get(0).concat(itemLocations.get(1));
+				}
+				else if(itemLocations.size() == 1){
+				s =	itemLocations.get(0);
+				}
+				
+				if(s!=null) {
+				p = generatedSentence.concat(s);
+				}else {
+					p = generatedSentence;
+				}
+				
+				System.out.println(p);
+			return new ResponseEntity<>(p , HttpStatus.OK);
 		}
 	}
 
