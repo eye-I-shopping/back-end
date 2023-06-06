@@ -191,20 +191,7 @@ public class Potocontroller {
 				
 			}
 			
-//				String p =""; 
-//				String s = "";
-//				if(itemLocations!=null) {
-//				s = itemLocations.get(0).concat(itemLocations.get(1));
-//				}
-//				if(s!=null) {
-//				p = generatedSentence.concat(s);
-//				}else {
-//					p = generatedSentence;
-//				}
-//				
-//				System.out.println(p);
-			return new ResponseEntity<>(generatedSentence , HttpStatus.OK);
-				String p ="";
+				String p =""; 
 				String s = "";
 				if(itemLocations.size() == 2) {
 				s = itemLocations.get(0).concat(itemLocations.get(1));
@@ -215,7 +202,8 @@ public class Potocontroller {
 				
 				if(s != null) {
 				p = generatedSentence.concat(s);
-				}else {
+				}
+				else {
 					p = generatedSentence;
 				}
 				
