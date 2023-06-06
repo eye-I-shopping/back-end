@@ -1,6 +1,7 @@
 package com.example.TT.item.controller;
 
 import java.io.PrintStream;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -190,6 +191,19 @@ public class Potocontroller {
 				
 			}
 			
+//				String p =""; 
+//				String s = "";
+//				if(itemLocations!=null) {
+//				s = itemLocations.get(0).concat(itemLocations.get(1));
+//				}
+//				if(s!=null) {
+//				p = generatedSentence.concat(s);
+//				}else {
+//					p = generatedSentence;
+//				}
+//				
+//				System.out.println(p);
+			return new ResponseEntity<>(generatedSentence , HttpStatus.OK);
 				String p ="";
 				String s = "";
 				if(itemLocations.size() == 2) {
@@ -216,10 +230,11 @@ public class Potocontroller {
         GPT3PromptDto prompt = new GPT3PromptDto();
 		prompt.setModel("text-davinci-003");
 		prompt.setPrompt(String.format(
-//				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
-//						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
-						"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
-								+ "%s,%s, %s, %s, %s, %s",
+				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요. 객관적인 정보로 답을 주세요. 당신의 의견을 붙이지 말아주세요. 부탁합니다."
+				+"[]안에 주어진 정보들은 이름, 카테고리 ,맛, 알레르기,포장재료, 조리법 순으로 들어있어"
+				+",로 구분되며 띄워쓰기만 되어 있는 경우는 제외하고, 단어나 문장이 존재하는 데이터로만 구성해줘"
+						
+				+"[이름: %s,%s,%s,%s,%s,%s]",
 				test1.getName(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
 				test1.getMake()));
 		prompt.setMax_tokens(500);
