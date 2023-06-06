@@ -199,7 +199,7 @@ public class Potocontroller {
 				s =	itemLocations.get(0);
 				}
 				
-				if(s!=null) {
+				if(s != null) {
 				p = generatedSentence.concat(s);
 				}else {
 					p = generatedSentence;
