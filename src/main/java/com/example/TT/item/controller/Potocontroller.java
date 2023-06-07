@@ -54,14 +54,18 @@ public class Potocontroller {
 		System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
 		if (itemsList.length >= 10) {
+			System.out.println(itemsList);
 			Map<String, Integer> categoryCountMap = new HashMap<>();
 			for (itemDto3 item : itemsList) {
 				String category = test1Service.getCategoryByName(item.getName());
+//				System.out.println(category);
 				categoryCountMap.put(category, categoryCountMap.getOrDefault(category, 0) + 1);
 			}
 			String mostCommonCategory = Collections.max(categoryCountMap.entrySet(), Map.Entry.comparingByValue())
 					.getKey();
 
+			System.out.println(mostCommonCategory);
+	
 			return new ResponseEntity<>(mostCommonCategory + " 매대 입니다", HttpStatus.OK);
 		} else {
 
@@ -150,8 +154,11 @@ public class Potocontroller {
 
 				generatedSentence = ToGPT3(dbItemOpt.get());
 			}else if(highestConfidenceItem.getFilter().equals("0")) {
-				
-				generatedSentence = highestConfidenceItem.getName();
+//				dbItemOpt.get().setAllegori(null);
+//				dbItemOpt.get().setCategory(null);
+				generatedSentence =	dbItemOpt.get().getHname();
+//				generatedSentence =	highestConfidenceItem.get().getHname();
+//				generatedSentence = highestConfidenceItem.getName();
 	        }
 
 			List<String> itemLocations = new ArrayList<>();
@@ -225,6 +232,13 @@ public class Potocontroller {
 						
 				+"[이름: %s,%s,%s,%s,%s,%s]",
 				test1.getName(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
+=======
+//				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
+//						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
+						"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
+								+ "%s,%s, %s, %s, %s, %s",
+				test1.getHname(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
+>>>>>>> d23ed57a78ce3ddebf9f2966bcbe2cb19b720247
 				test1.getMake()));
 		prompt.setMax_tokens(500);
 		prompt.setTemperature(0.0);
