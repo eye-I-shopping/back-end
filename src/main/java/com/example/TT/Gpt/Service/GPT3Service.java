@@ -16,7 +16,7 @@ import okhttp3.Response;
 
 @Service
 public class GPT3Service {
-    private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
+    private final String apiKey = ""; // OpenAI API 키를 여기에 입력해주세요
     private final OkHttpClient client = new OkHttpClient();
 
     public String processRequest(String jsonInput) throws IOException {
@@ -37,7 +37,6 @@ public class GPT3Service {
                 responseJson = response.body().string();
                 System.out.println("반응 성공");
                 System.out.println(responseJson); // 응답 JSON 출력
-
                 // 응답 JSON 파싱
                 JsonObject responseObj = new Gson().fromJson(responseJson, JsonObject.class);
                 if (responseObj.has("choices") && responseObj.get("choices").isJsonArray()) {

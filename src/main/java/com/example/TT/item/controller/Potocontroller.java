@@ -172,27 +172,34 @@ public class Potocontroller {
 			for (itemDto3 item : top3Items) {
 				double x = item.getXmax();
 				double y = item.getYmax();
-				String itemName = item.getName();
-
+//				String itemName = item.getName();
+				
+				Optional<itementity> dbItemOpt2 = test1Service.findByName(item.getName());
+				String str = dbItemOpt2.get().getHname(); 
+				
+				if(str == null) {
+					str = item.getName();
+				}
+				
 				if (x > xReference && y < yReference) {
-					itemLocations.add("오른쪽 영역 하단 에  " + itemName + "이 있습니다.");
+					itemLocations.add("오른쪽 영역 하단 에  " + str + "제품이 있습니다.");
 				} else if (x > xReference && y > yReference) {
-					itemLocations.add("오른쪽 영역 상단 에 " + itemName + "이 있습니다.");
+					itemLocations.add("오른쪽 영역 상단 에 " + str + "제품이 있습니다.");
 				} else if (x < xReference && y < yReference) {
-					itemLocations.add("왼쪽 영역 하단 에 " + itemName + "이 있습니다.");
+					itemLocations.add("왼쪽 영역 하단 에 " + str + "제품이 있습니다.");
 				} else if (x < xReference && y > yReference) {
-					itemLocations.add("왼쪽 영역 상단 에 " + itemName + "");
+					itemLocations.add("왼쪽 영역 상단 에 " + str + "제품이 있습니다");
 				} else if (x < xReference && y == yReference) {
-					itemLocations.add(itemName+"이 수평에서 왼쪽 영역에 있습니다. " );
+					itemLocations.add(str + "제품은 수평에서 왼쪽 영역에 있습니다. " );
 				} else if (x > xReference && y == yReference) {
-					itemLocations.add(itemName+ "이 수평에서 오른쪽 영역에 있습니다. ");
+					itemLocations.add(str + "제품은 수평에서 오른쪽 영역에 있습니다. ");
 				} else if (x == xReference && y < yReference) {
-					itemLocations.add(itemName +"바로 아래쪽에있습니다. ");
+					itemLocations.add(str + "제품은 바로 아래쪽에있습니다. ");
 				} else if (x == xReference && y > yReference) {
-					itemLocations.add( itemName + "은 바로 위쪽에있습니다. ");
+					itemLocations.add(str + "제품은 바로 위쪽에있습니다. ");
 				}
 				else if (x == xReference && y == yReference) {
-					itemLocations.add(itemName + "은 같은위치에있습니다. ");
+					itemLocations.add(str + "제품은 같은위치에있습니다. ");
 				}
 				
 			}
@@ -225,8 +232,10 @@ public class Potocontroller {
 		prompt.setPrompt(String.format(
 //				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
 //						+ "이름: %s, 카테고리: %s, 맛:%s, 알레르기: %s, %s, %s",
-						"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요."
-								+ "%s,%s, %s, %s, %s, %s",
+				"다음 정보를 순서대로 이용하여 존댓말로 설명문을 완성해주세요. 맛에 대한 정보가 중복될 경우 한번만 언급하세요. 객관적인 정보로 답을 주세요. 당신의 의견을 붙이지 말아주세요. 부탁합니다."
+				+"[]안에 주어진 정보들은 이름, 카테고리 ,맛, 알레르기,포장재료, 조리법 순으로 들어있어"
+				+",로 구분되며 띄워쓰기만 되어 있는 경우는 제외하고, 단어나 문장이 존재하는 데이터로만 구성해줘"
+				+"[이름: %s,%s,%s,%s,%s,%s]",
 				test1.getHname(), test1.getCategory(), test1.getItemDetail(), test1.getAllegori(), test1.getShape(),
 				test1.getMake()));
 		prompt.setMax_tokens(500);
@@ -246,6 +255,7 @@ public class Potocontroller {
 			if(generatedText == jsonInput) {
 			generatedText =	test1.getHname();
 			}
+			
 			return generatedText;
 			
 		} catch (Exception e) {
@@ -263,7 +273,6 @@ public class Potocontroller {
 
 		for (int i = 0; i < 3 && i < itemsList.length; i++) {
 			itemDto3 maxConfidenceItem = null;
-
 			for (itemDto3 item : itemsList) {
 				if (!selectedItems.contains(item)
 						&& (maxConfidenceItem == null || item.getConfidence() > maxConfidenceItem.getConfidence())) {
