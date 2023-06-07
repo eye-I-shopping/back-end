@@ -45,7 +45,8 @@ public class itementity {
     
 //5. 조리 방법,주의 할점
     private String make;
-
+//6. 한글 이름
+    private String hname;
 //xmin,ymin,xmax,confidence,class,name 상세정보  // + 번역 -----> 포폴 
 // +아두이노 포폴x    상 O
 }
