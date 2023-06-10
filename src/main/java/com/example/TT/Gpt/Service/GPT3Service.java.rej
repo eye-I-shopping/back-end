@@ -1,9 +1,0 @@
-diff a/src/main/java/com/example/TT/Gpt/Service/GPT3Service.java b/src/main/java/com/example/TT/Gpt/Service/GPT3Service.java	(rejected hunks)
-@@ -16,6 +16,7 @@
- 
- @Service
- public class GPT3Service {
-+<<<<<<< HEAD
-     private final String apiKey = "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"; // OpenAI API 키를 여기에 입력해주세요
- 
- =======

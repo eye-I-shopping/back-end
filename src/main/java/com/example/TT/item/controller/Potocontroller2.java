@@ -24,7 +24,9 @@ import com.example.TT.item.dto.itemDto3;
 import com.example.TT.item.dto.GPT3PromptDto;
 
 import com.example.TT.item.entity.itementity;
+import com.example.TT.item.entity.itementity2;
 import com.example.TT.item.service.Test1Service;
+import com.example.TT.item.service.Test1Service2;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,19 +34,25 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class Potocontroller {
+public class Potocontroller2 {
 	private final Test1Service test1Service;
+
+	private final Test1Service2 service2;
+	
 	private final GPT3Service gpt3Service;
 
-	public Potocontroller(Test1Service test1Service, GPT3Service gpt3Service) {
+	
+	public Potocontroller2(Test1Service test1Service, GPT3Service gpt3Service,Test1Service2 service2) {
 		this.test1Service = test1Service;
 		this.gpt3Service = gpt3Service;
+		this.service2 = service2;
 	}
 		
-	@PostMapping(value = "/api/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/api/test3", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> handleJSONData(@RequestBody(required = false) itemDto3[] itemsList) {
 		System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 	
+		
 	System.out.println("1번쟤"+itemsList);	
 		
 		if (itemsList == null || itemsList.length == 0) {
@@ -58,9 +66,12 @@ public class Potocontroller {
 			Map<String, Integer> categoryCountMap = new HashMap<>();
 			for (itemDto3 item : itemsList) {
 				String category = test1Service.getCategoryByName(item.getName());
-//				System.out.println(category);
+				System.out.println(category);
 				categoryCountMap.put(category, categoryCountMap.getOrDefault(category, 0) + 1);
+				
 			}
+			
+			
 			String mostCommonCategory = Collections.max(categoryCountMap.entrySet(), Map.Entry.comparingByValue())
 					.getKey();
 
@@ -69,90 +80,79 @@ public class Potocontroller {
 			return new ResponseEntity<>(mostCommonCategory + " 매대 입니다", HttpStatus.OK);
 		} else {
 
+			
 			List<itemDto3> top3Items = getTop3ItemsByConfidence(itemsList);
 
+//			영문이름
 //            String itemDetail = test1Service.getItemDetailByName(top3Items.get(0).getName());
 			itemDto3 highestConfidenceItem = top3Items.get(0);
+			
 
 			if (highestConfidenceItem == null) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			Optional<itementity> dbItemOpt = test1Service.findByName(highestConfidenceItem.getName());
+			
+			Optional<itementity2> dbItemOpt = service2.findByName(highestConfidenceItem.getName());
+			
 			if (!dbItemOpt.isPresent()) {
-				dbItemOpt = test1Service.findByName(top3Items.get(0).getName());
+				dbItemOpt = service2.findByName(top3Items.get(0).getName());
 			}
 
 			if (dbItemOpt.isEmpty()) {
-			
-				
+
 				return new ResponseEntity<>(highestConfidenceItem.getName(), HttpStatus.OK);
 			
 			}
 		
 			String generatedSentence = "";
 			if (highestConfidenceItem.getFilter().equals("15") ) {
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail15();
+//				generatedSentence = ToGPT3(dbItemOpt.get());
+				
 			} else if (highestConfidenceItem.getFilter().equals("14")) {
-				dbItemOpt.get().setItemDetail(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail14();
+//				generatedSentence = ToGPT3(dbItemOpt.get());
+				
 			} else if (highestConfidenceItem.getFilter().equals("13")) {
-				dbItemOpt.get().setAllegori(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail13();
+
 			} else if (highestConfidenceItem.getFilter().equals("12")) {
-				dbItemOpt.get().setAllegori(" ");
-				dbItemOpt.get().setItemDetail(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail12();
+
 			} else if (highestConfidenceItem.getFilter().equals("11")) {
-				dbItemOpt.get().setShape(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail11();
+
 			} else if (highestConfidenceItem.getFilter().equals("10")) {
-				dbItemOpt.get().setShape(" ");
-				dbItemOpt.get().setItemDetail(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail10();
+
 			} else if (highestConfidenceItem.getFilter().equals("9")) {
-				dbItemOpt.get().setShape(" ");
-				dbItemOpt.get().setAllegori(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail9();
+;
 			} else if (highestConfidenceItem.getFilter().equals("8")) {
-				dbItemOpt.get().setShape(" ");
-				dbItemOpt.get().setAllegori(" ");
-				dbItemOpt.get().setItemDetail(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail8();
+
 			} else if (highestConfidenceItem.getFilter().equals("7")) {
-				dbItemOpt.get().setMake(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail7();
+
 			} else if (highestConfidenceItem.getFilter().equals("6")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setItemDetail(" ");
-
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail6();
+				
 			} else if (highestConfidenceItem.getFilter().equals("5")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setAllegori(" ");
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail5();
+
+			
 			} else if (highestConfidenceItem.getFilter().equals("4")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setItemDetail(" ");
-				dbItemOpt.get().setAllegori(" ");
+				generatedSentence = dbItemOpt.get().getItemDetail4();
 
-				generatedSentence = ToGPT3(dbItemOpt.get());
 			} else if (highestConfidenceItem.getFilter().equals("3")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setShape(" ");
+				generatedSentence = dbItemOpt.get().getItemDetail3();
 
-				generatedSentence = ToGPT3(dbItemOpt.get());
 			} else if (highestConfidenceItem.getFilter().equals("2")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setItemDetail(" ");
-				dbItemOpt.get().setShape(" ");
+				generatedSentence = dbItemOpt.get().getItemDetail2();
 
-				generatedSentence = ToGPT3(dbItemOpt.get());
+
 			} else if (highestConfidenceItem.getFilter().equals("1")) {
-				dbItemOpt.get().setMake(" ");
-				dbItemOpt.get().setShape(" ");
-				dbItemOpt.get().setAllegori(" ");
-
-				generatedSentence = ToGPT3(dbItemOpt.get());
+				generatedSentence = dbItemOpt.get().getItemDetail1();
 			}else if(highestConfidenceItem.getFilter().equals("0")) {
 //				dbItemOpt.get().setAllegori(null);
 //				dbItemOpt.get().setCategory(null);

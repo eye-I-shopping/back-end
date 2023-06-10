@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.stereotype.Service;
 
+import com.example.TT.item.entity.itementity;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -21,7 +22,7 @@ public class GPT3Service {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    public String processRequest(String jsonInput) throws IOException {
+    public String processRequest(String jsonInput,itementity itementity) throws IOException {
         String url = "https://api.openai.com/v1/completions";
         MediaType mediaType = MediaType.parse("application/json; charset = UTF-8");
         RequestBody body = RequestBody.create(jsonInput, mediaType);
@@ -48,7 +49,7 @@ public class GPT3Service {
                         JsonObject choiceObject = choicesArray.get(0).getAsJsonObject();
                         if (choiceObject.has("text")) {
                             String generatedText = choiceObject.get("text").getAsString();
-                            return generatedText;
+                            return "이 제품은 "+ itementity.getHname()+"입니다."+generatedText;
                         }
                     }
                 }
